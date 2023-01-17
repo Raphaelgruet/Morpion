@@ -9,6 +9,9 @@
 #include <assert.h>
 
 // variables globales du module a definir ici
+PieceType board[3][3];
+SquareChangeCallback squareChange;
+EndOfGameCallback endOfGame;
 
 /**
  * Check if the game has to be ended. Only alignment from the last
@@ -30,7 +33,6 @@ bool isGameFinished (const PieceType boardSquares[3][3], Coordinate lastChangeX,
 					 Coordinate lastChangeY, GameResult *gameResult){
 	PieceType piece = boardSquares[lastChangeY][lastChangeX];
 	if(piece == NONE){
-		*gameResult = DRAW;
 		return false;
 	}
 	if(lastChangeX == 0 && boardSquares[lastChangeY][lastChangeX+1] == piece && boardSquares[lastChangeY][lastChangeX+2] == piece){
@@ -97,7 +99,8 @@ bool isGameFinished (const PieceType boardSquares[3][3], Coordinate lastChangeX,
 }
 
 void Board_init (SquareChangeCallback onSquareChange, EndOfGameCallback onEndOfGame){
-    // TODO: à compléter
+    squareChange = onSquareChange;
+	endOfGame = onEndOfGame;
 }
 
 void Board_free (){
@@ -105,9 +108,18 @@ void Board_free (){
 }
 
 PutPieceResult Board_putPiece (Coordinate x, Coordinate y, PieceType kindOfPiece){
-    // TODO: à compléter
+	if(Board_getSquareContent(x,y) == NONE){
+		squareChange(x, y, kindOfPiece);
+		GameResult  result;
+		if(isGameFinished(board,x,y,&result)){
+			endOfGame(result);
+		}
+		return PIECE_IN_PLACE;
+	} else {
+		return SQUARE_IS_NOT_EMPTY;
+	}
 }
 
 PieceType Board_getSquareContent (Coordinate x, Coordinate y){
-    // TODO: à compléter
+    return board[x][y];
 }

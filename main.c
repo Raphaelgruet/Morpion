@@ -1,14 +1,18 @@
 /**
  * @file main.c
  *
- * @date 27 oct. 2016
- * @author jillias
+ * @date 7/10/2016
+ * @author Jonathan ILIAS-PILLET & Richard WOODWARD
  */
 
-#include "checkEndOfGame.h"
+#include "game.h"
 
 int main (void){
+	Game_init ();
 
-	checkEndOfGame();
+	Game_loop ();
+
+	Game_free ();
+
 	return 0;
 }

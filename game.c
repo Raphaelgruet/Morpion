@@ -6,13 +6,11 @@
  */
 
 #include "player_manager.h"
-#include "board_view.h"
+#include "game.h"
 #include "board.h"
 
-
-
 void Game_init (void){
-  // TODO: initialiser tous les modules
+	Board_init(*squareChange, *endOfGame);
 }
 
 void Game_free (void){
@@ -21,4 +19,12 @@ void Game_free (void){
 
 void Game_loop (void){
 	// TODO: à compléter
+}
+
+void squareChange(Coordinate x, Coordinate y, PieceType newContent){
+	board[x][y] = newContent;
+}
+
+void endOfGame(GameResult result){
+
 }
