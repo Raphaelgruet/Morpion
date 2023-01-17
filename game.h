@@ -9,6 +9,8 @@
 #if !defined GAME_H_
 #define GAME_H_
 
+#include "board.h"
+
 /**
  * Game constructor.
  */

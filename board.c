@@ -110,6 +110,7 @@ void Board_free (){
 PutPieceResult Board_putPiece (Coordinate x, Coordinate y, PieceType kindOfPiece){
 	if(Board_getSquareContent(x,y) == NONE){
 		squareChange(x, y, kindOfPiece);
+		board[x][y] = kindOfPiece;
 		GameResult  result;
 		if(isGameFinished(board,x,y,&result)){
 			endOfGame(result);

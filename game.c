@@ -7,7 +7,6 @@
 
 #include "player_manager.h"
 #include "game.h"
-#include "board.h"
 
 void Game_init (void){
 	Board_init(*squareChange, *endOfGame);
@@ -22,7 +21,7 @@ void Game_loop (void){
 }
 
 void squareChange(Coordinate x, Coordinate y, PieceType newContent){
-	board[x][y] = newContent;
+
 }
 
 void endOfGame(GameResult result){
