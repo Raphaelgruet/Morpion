@@ -9,7 +9,7 @@
 #include "game.h"
 
 void Game_init (void){
-	Board_init(*squareChange, *endOfGame);
+	Board_init(squareChange, endOfGame);
 }
 
 void Game_free (void){
@@ -21,7 +21,7 @@ void Game_loop (void){
 }
 
 void squareChange(Coordinate x, Coordinate y, PieceType newContent){
-
+	BoardView_displayAll();
 }
 
 void endOfGame(GameResult result){

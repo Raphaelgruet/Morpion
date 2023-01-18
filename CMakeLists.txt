@@ -3,7 +3,8 @@ project(Morpion C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(Morpion main.c board.c board.h checkEndOfGame.c checkEndOfGame.h game.h game.c player_manager_mock.c)
+add_compile_definitions(CONFIG_TEXTUI)
+add_executable(Morpion main.c board.c board.h checkEndOfGame.c checkEndOfGame.h game.h game.c player_manager_mock.c board_view.h board_view_text.c)
         #board_view_text.c board_view.h
         #game.c game.h
         #player_manager_mock.c player_manager.h

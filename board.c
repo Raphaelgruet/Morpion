@@ -10,8 +10,8 @@
 
 // variables globales du module a definir ici
 PieceType board[3][3];
-SquareChangeCallback squareChange;
-EndOfGameCallback endOfGame;
+SquareChangeCallback squareChangeCallback;
+EndOfGameCallback endOfGameCallback;
 
 /**
  * Check if the game has to be ended. Only alignment from the last
@@ -99,8 +99,8 @@ bool isGameFinished (const PieceType boardSquares[3][3], Coordinate lastChangeX,
 }
 
 void Board_init (SquareChangeCallback onSquareChange, EndOfGameCallback onEndOfGame){
-    squareChange = onSquareChange;
-	endOfGame = onEndOfGame;
+	squareChangeCallback = onSquareChange;
+	endOfGameCallback = onEndOfGame;
 }
 
 void Board_free (){
@@ -109,11 +109,11 @@ void Board_free (){
 
 PutPieceResult Board_putPiece (Coordinate x, Coordinate y, PieceType kindOfPiece){
 	if(Board_getSquareContent(x,y) == NONE){
-		squareChange(x, y, kindOfPiece);
+		squareChangeCallback(x, y, kindOfPiece);
 		board[x][y] = kindOfPiece;
 		GameResult  result;
 		if(isGameFinished(board,x,y,&result)){
-			endOfGame(result);
+			endOfGameCallback(result);
 		}
 		return PIECE_IN_PLACE;
 	} else {
