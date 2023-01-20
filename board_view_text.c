@@ -22,6 +22,7 @@ void BoardView_displayAll (void){
 		for(int x = 0; x <= 2; x++){
 			BoardView_displaySquare(x, y, Board_getSquareContent(x, y));
 		}
+		printf("\n");
 	}
 }
 
@@ -32,7 +33,7 @@ void BoardView_displaySquare (Coordinate x, Coordinate y, PieceType kindOfPiece)
 	} else if (kindOfPiece == CIRCLE){
 		printf("O");
 	} else {
-		printf(" ");
+		printf(".");
 	}
 }
 

@@ -10,6 +10,7 @@
 #define GAME_H_
 
 #include "board.h"
+#include <stdio.h>
 
 /**
  * Game constructor.

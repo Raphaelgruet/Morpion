@@ -7,6 +7,7 @@
 
 #include "board.h"
 #include <assert.h>
+#include <stdio.h>
 
 // variables globales du module a definir ici
 PieceType board[3][3];
@@ -31,54 +32,62 @@ EndOfGameCallback endOfGameCallback;
  */
 bool isGameFinished (const PieceType boardSquares[3][3], Coordinate lastChangeX,
 					 Coordinate lastChangeY, GameResult *gameResult){
-	PieceType piece = boardSquares[lastChangeY][lastChangeX];
+	PieceType piece = boardSquares[lastChangeX][lastChangeY];
+	GameResult result = DRAW;
+	if(piece == CIRCLE){
+		result = CIRCLE_WINS;
+	} else if (piece == CROSS){
+		result = CROSS_WINS;
+	}
 	if(piece == NONE){
 		return false;
 	}
-	if(lastChangeX == 0 && boardSquares[lastChangeY][lastChangeX+1] == piece && boardSquares[lastChangeY][lastChangeX+2] == piece){
-		*gameResult = (GameResult) piece;
+	if(lastChangeX == 0 && boardSquares[lastChangeX+1][lastChangeY] == piece && boardSquares[lastChangeX+2][lastChangeY] == piece){
+		*gameResult = result;
 		return true;
 	}
-	if(lastChangeX == 1 && boardSquares[lastChangeY][lastChangeX-1] == piece && boardSquares[lastChangeY][lastChangeX+1] == piece){
-		*gameResult = (GameResult) piece;
+	if(lastChangeX == 1 && boardSquares[lastChangeX-1][lastChangeY] == piece && boardSquares[lastChangeX+1][lastChangeY] == piece){
+		*gameResult = result;
 		return true;
 	}
-	if(lastChangeX == 2 && boardSquares[lastChangeY][lastChangeX-2] == piece && boardSquares[lastChangeY][lastChangeX-1] == piece){
-		*gameResult = (GameResult) piece;
+	if(lastChangeX == 2 && boardSquares[lastChangeX-2][lastChangeY] == piece && boardSquares[lastChangeX-1][lastChangeY] == piece){
+		*gameResult = result;
 		return true;
 	}
-	if(lastChangeY == 0 && boardSquares[lastChangeY+1][lastChangeX] == piece && boardSquares[lastChangeY+2][lastChangeX] == piece){
-		*gameResult = (GameResult) piece;
+	if(lastChangeY == 0 && boardSquares[lastChangeX][lastChangeY+1] == piece && boardSquares[lastChangeX][lastChangeY+2] == piece){
+		*gameResult = result;
 		return true;
 	}
-	if(lastChangeY == 1 && boardSquares[lastChangeY-1][lastChangeX] == piece && boardSquares[lastChangeY+1][lastChangeX] == piece){
-		*gameResult = (GameResult) piece;
+	if(lastChangeY == 1 && boardSquares[lastChangeX][lastChangeY-1] == piece && boardSquares[lastChangeX][lastChangeY+1] == piece){
+		*gameResult = result;
 		return true;
 	}
-	if(lastChangeY == 2 && boardSquares[lastChangeY-2][lastChangeX] == piece && boardSquares[lastChangeY-1][lastChangeX] == piece){
-		*gameResult = (GameResult) piece;
+	if(lastChangeY == 2 && boardSquares[lastChangeX][lastChangeY-2] == piece && boardSquares[lastChangeX][lastChangeY-1] == piece){
+		*gameResult = result;
 		return true;
 	}
-	if(lastChangeX+lastChangeY != 1 && lastChangeX+lastChangeY != 3){
-		if(lastChangeX+lastChangeY == 0 && boardSquares[lastChangeY+1][lastChangeX+1] == piece && boardSquares[lastChangeY+2][lastChangeX+2] == piece){
-			*gameResult = (GameResult) piece;
+	if (lastChangeX + lastChangeY == 0 && boardSquares[lastChangeX + 1][lastChangeY + 1] == piece &&
+		boardSquares[lastChangeX + 2][lastChangeY + 2] == piece) {
+		*gameResult = result;
+		return true;
+	}
+	if (lastChangeX + lastChangeY == 4 && boardSquares[lastChangeX - 1][lastChangeY - 1] == piece &&
+		boardSquares[lastChangeX - 2][lastChangeY - 2] == piece) {
+		*gameResult = result;
+		return true;
+	}
+	if(lastChangeX+lastChangeY == 2){
+		if(lastChangeY == 0 && boardSquares[lastChangeX-1][lastChangeY+1] == piece && boardSquares[lastChangeX-2][lastChangeY+2] == piece){
+			*gameResult = result;
 			return true;
 		}
-		if(lastChangeX+lastChangeY == 4 && boardSquares[lastChangeY-1][lastChangeX-1] == piece && boardSquares[lastChangeY-2][lastChangeX-2] == piece){
-			*gameResult = (GameResult) piece;
+		if(lastChangeY == 2 && boardSquares[lastChangeX+1][lastChangeY-1] == piece && boardSquares[lastChangeX+2][lastChangeY-2] == piece){
+			*gameResult = result;
 			return true;
 		}
-		if(lastChangeY == 0 && boardSquares[lastChangeY+1][lastChangeX-1] == piece && boardSquares[lastChangeY+2][lastChangeX-2] == piece){
-			*gameResult = (GameResult) piece;
-			return true;
-		}
-		if(lastChangeY == 2 && boardSquares[lastChangeY-1][lastChangeX+1] == piece && boardSquares[lastChangeY-2][lastChangeX+2] == piece){
-			*gameResult = (GameResult) piece;
-			return true;
-		}
-		if(lastChangeY == 1 && ((boardSquares[lastChangeY-1][lastChangeX+1] == piece &&  boardSquares[lastChangeY+1][lastChangeX-1] == piece) ||
-		(boardSquares[lastChangeY-1][lastChangeX-1] == piece && boardSquares[lastChangeY+1][lastChangeX+1] == piece))){
-			*gameResult = (GameResult) piece;
+		if(lastChangeY == 1 && ((boardSquares[lastChangeX+1][lastChangeY-1] == piece &&  boardSquares[lastChangeX-1][lastChangeY+1] == piece) ||
+				(boardSquares[lastChangeX-1][lastChangeY-1] == piece && boardSquares[lastChangeX+1][lastChangeY+1] == piece))){
+			*gameResult = result;
 			return true;
 		}
 	}
@@ -103,15 +112,19 @@ void Board_init (SquareChangeCallback onSquareChange, EndOfGameCallback onEndOfG
 	endOfGameCallback = onEndOfGame;
 }
 
-void Board_free (){
-    // TODO: à compléter
+void Board_free(){
+	for(int y = 0; y <= 2; y++) {
+		for (int x = 0; x <= 2; x++) {
+			board[x][y] = NONE;
+		}
+	}
 }
 
 PutPieceResult Board_putPiece (Coordinate x, Coordinate y, PieceType kindOfPiece){
 	if(Board_getSquareContent(x,y) == NONE){
-		squareChangeCallback(x, y, kindOfPiece);
 		board[x][y] = kindOfPiece;
-		GameResult  result;
+		squareChangeCallback(x, y, kindOfPiece);
+		GameResult result;
 		if(isGameFinished(board,x,y,&result)){
 			endOfGameCallback(result);
 		}
@@ -122,5 +135,8 @@ PutPieceResult Board_putPiece (Coordinate x, Coordinate y, PieceType kindOfPiece
 }
 
 PieceType Board_getSquareContent (Coordinate x, Coordinate y){
+	if(x > 2 || y > 2){
+		return 0;
+	}
     return board[x][y];
 }

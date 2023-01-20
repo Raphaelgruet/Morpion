@@ -5,9 +5,9 @@
  * @author ???
  */
 
-#include "board.h"
 #include <assert.h>
 #include <stdio.h>
+#include "player_manager.h"
 
 #ifdef CONFIG_PLAYER_MANAGER_MOCK
 
@@ -18,7 +18,9 @@ void PlayerManager_free (void){
 }
 
 void PlayerManager_oneTurn (void){
-  /* TODO: à compléter */
+	while(Board_putPiece(1, 0, CROSS) != PIECE_IN_PLACE) {
+		printf("Il y a déjà une pièce à cette emplacement");
+	}
 }
 
 #endif //  #if defined CONFIG_PLAYER_MANAGER_MOCK

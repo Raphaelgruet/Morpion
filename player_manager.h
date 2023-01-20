@@ -7,6 +7,8 @@
  * @author Jonathan ILIAS-PILLET & Richard WOODWARD
  */
 
+#include "board.h"
+
 #if !defined PLAYER_MANAGER_H_
 #define PLAYER_MANAGER_H_
 

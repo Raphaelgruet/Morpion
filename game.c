@@ -7,17 +7,22 @@
 
 #include "player_manager.h"
 #include "game.h"
+#include "board_view.h"
+
+bool isFinish = false;
 
 void Game_init (void){
 	Board_init(squareChange, endOfGame);
 }
 
 void Game_free (void){
-  // TODO: libérer tous les modules
+	Board_free();
 }
 
 void Game_loop (void){
-	// TODO: à compléter
+	while(isFinish == false){
+		PlayerManager_oneTurn();
+	}
 }
 
 void squareChange(Coordinate x, Coordinate y, PieceType newContent){
@@ -25,5 +30,18 @@ void squareChange(Coordinate x, Coordinate y, PieceType newContent){
 }
 
 void endOfGame(GameResult result){
-
+	printf("-------------- fin de partie --------------\n");
+	if(result == DRAW){
+		printf(">>   Il y a egalite\n");
+	} else {
+		char* gagnant;
+		if(result == CROSS_WINS){
+			gagnant = "CROIX";
+		} else {
+			gagnant = "CERCLES";
+		}
+		printf(">>   Victoire des %s\n", gagnant);
+	}
+	printf("-------------------------------------------\n");
+	isFinish = true;
 }
