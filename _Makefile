@@ -1,0 +1,14 @@
+CC = gcc
+CFLAGS = -I. -DCONFIG_TEXTUI -DCONFIG_PLAYER_MANAGER_SCANF
+DEPS = src/board.h src/checkEndOfGame.h src/game.h src/board_view.h #src/main.c
+OBJS = board.o checkEndOfGame.o game.o board_view.o main.o
+
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $< 
+
+morpion: $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ 
+	
+clean:
+	rm -f morpion $(OBJS)
+	

@@ -1,0 +1,31 @@
+CC=gcc
+CFLAGS= -Wall -DCONFIG_SDLUI -DCONFIG_PLAYER_MANAGER_SCANF
+DEPS = src/board.h  src/board_view.h src/game.h src/player_manager.h src/tictactoe_errors.h src/player_manager_mock.h
+OBJ = main.o board.o board_view_text.o game.o #tictactoe_errors.o
+
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+morpion: $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+clean:
+	rm -f morpion $(OBJS)
+
+#OBJS	= src/main.o
+#SOURCE	= src/main.c
+#HEADER	= src/board.h src/board_view.h src/game.h src/player_manager.h src/tictactoe_errors.h src/player_manager_mock.h
+#OUT	=
+#CC	 = gcc
+#FLAGS	 = -g -c -Wall -DCONFIG_SDLUI -DCONFIG_PLAYER_MANAGER_SCANF
+#LFLAGS	 =
+#
+#all: $(OBJS)
+#	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+#
+#src/main.o: src/main.c
+#	$(CC) $(FLAGS) src/main.c
+#
+#
+#clean:
+#	rm -f $(OBJS) $(OUT)
